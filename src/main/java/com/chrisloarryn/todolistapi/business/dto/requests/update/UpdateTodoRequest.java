@@ -11,11 +11,17 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateTodoRequest {
+    @NonNull
     private String title;
+    @NonNull
     private String description;
     private Date dueDate;
+    @NonNull
     private State state;
+    @NonNull
     private Boolean active;
+    @NonNull
     private Priority priority;
+    @NonNull
     private String author;
 }
