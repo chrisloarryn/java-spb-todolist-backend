@@ -14,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"title\": \"title\"\n}",
+					"raw": "{\n    \"title\": \"string\",\n    \"description\": \"string\",\n    \"dueDate\": \"2023-09-08T08:17:24.928Z\",\n    \"state\": \"TODO\",\n    \"active\": true,\n    \"priority\": \"LOW\",\n    \"author\": \"string\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
