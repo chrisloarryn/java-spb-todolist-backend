@@ -33,8 +33,7 @@ public class TodoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateTodoResponse add(@Valid @RequestBody CreateTodoRequest request) throws InterruptedException
-    {
+    public CreateTodoResponse add(@Valid @RequestBody CreateTodoRequest request) throws InterruptedException {
         return service.add(request);
     }
 

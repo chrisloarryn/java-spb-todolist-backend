@@ -5,13 +5,11 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
 @AllArgsConstructor
-public class ModelMapperManager implements ModelMapperService
-{
+public class ModelMapperManager implements ModelMapperService {
     private final ModelMapper mapper;
 
     @Override
-    public ModelMapper forResponse()
-    {
+    public ModelMapper forResponse() {
         mapper.getConfiguration()
                 .setAmbiguityIgnored(true)
                 .setMatchingStrategy(MatchingStrategies.LOOSE);
@@ -20,8 +18,7 @@ public class ModelMapperManager implements ModelMapperService
     }
 
     @Override
-    public ModelMapper forRequest()
-    {
+    public ModelMapper forRequest() {
         mapper.getConfiguration()
                 .setAmbiguityIgnored(true)
                 .setMatchingStrategy(MatchingStrategies.STANDARD);

@@ -9,6 +9,7 @@ import com.chrisloarryn.todolistapi.business.dto.responses.get.GetTodoResponse;
 import com.chrisloarryn.todolistapi.business.dto.responses.update.UpdateTodoResponse;
 import com.chrisloarryn.todolistapi.business.rules.TodoBusinessRules;
 import com.chrisloarryn.todolistapi.entities.Todo;
+import com.chrisloarryn.todolistapi.entities.TodoNotFoundException;
 import com.chrisloarryn.todolistapi.repository.TodoRepository;
 import com.chrisloarryn.todolistapi.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
@@ -36,9 +37,12 @@ public class TodoManager implements TodoService {
 
     @Override
     public GetTodoResponse getById(UUID id) {
-        rules.checkIfTodoExists(id);
-        var car = todoRepository.findById(id).orElseThrow();
-        return mapper.forResponse().map(car, GetTodoResponse.class);
+        if (!todoRepository.existsById(id)) {
+            throw new TodoNotFoundException(
+                    "Todo with id " + id + " does not exists");
+        }
+        var todo = todoRepository.findById(id).orElseThrow();
+        return mapper.forResponse().map(todo, GetTodoResponse.class);
     }
 
     @Override
@@ -50,7 +54,10 @@ public class TodoManager implements TodoService {
 
     @Override
     public UpdateTodoResponse update(UUID id, UpdateTodoRequest todoRequest) {
-        rules.checkIfTodoExists(id);
+        if (!todoRepository.existsById(id)) {
+            throw new TodoNotFoundException(
+                    "Todo with id " + id + " does not exists");
+        }
         var todo = mapper.forRequest().map(todoRequest, Todo.class);
         todo.setId(id);
         todoRepository.save(todo);
@@ -59,7 +66,10 @@ public class TodoManager implements TodoService {
 
     @Override
     public void delete(UUID id) {
-        rules.checkIfTodoExists(id);
+        if (!todoRepository.existsById(id)) {
+            throw new TodoNotFoundException(
+                    "Todo with id " + id + " does not exists");
+        }
         todoRepository.deleteById(id);
     }
 }

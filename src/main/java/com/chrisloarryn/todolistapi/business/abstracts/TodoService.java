@@ -12,8 +12,12 @@ import java.util.UUID;
 
 public interface TodoService {
     List<GetAllTodosResponse> getAll();
+
     GetTodoResponse getById(UUID id);
+
     CreateTodoResponse add(CreateTodoRequest todo);
+
     UpdateTodoResponse update(UUID id, UpdateTodoRequest todo);
+
     void delete(UUID id);
 }
