@@ -1,6 +1,7 @@
 package com.chrisloarryn.todolistapi.business.abstracts;
 
 import com.chrisloarryn.todolistapi.business.dto.requests.create.CreateTodoRequest;
+import com.chrisloarryn.todolistapi.business.dto.requests.update.UpdateTodoRequest;
 import com.chrisloarryn.todolistapi.business.dto.responses.create.CreateTodoResponse;
 import com.chrisloarryn.todolistapi.business.dto.responses.get.GetAllTodosResponse;
 import com.chrisloarryn.todolistapi.business.dto.responses.get.GetTodoResponse;
@@ -13,6 +14,6 @@ public interface TodoService {
     List<GetAllTodosResponse> getAll();
     GetTodoResponse getById(UUID id);
     CreateTodoResponse add(CreateTodoRequest todo);
-    UpdateTodoResponse update(UUID id, CreateTodoRequest todo);
+    UpdateTodoResponse update(UUID id, UpdateTodoRequest todo);
     void delete(UUID id);
 }

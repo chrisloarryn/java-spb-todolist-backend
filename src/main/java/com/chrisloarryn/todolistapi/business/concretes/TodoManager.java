@@ -2,6 +2,7 @@ package com.chrisloarryn.todolistapi.business.concretes;
 
 import com.chrisloarryn.todolistapi.business.abstracts.TodoService;
 import com.chrisloarryn.todolistapi.business.dto.requests.create.CreateTodoRequest;
+import com.chrisloarryn.todolistapi.business.dto.requests.update.UpdateTodoRequest;
 import com.chrisloarryn.todolistapi.business.dto.responses.create.CreateTodoResponse;
 import com.chrisloarryn.todolistapi.business.dto.responses.get.GetAllTodosResponse;
 import com.chrisloarryn.todolistapi.business.dto.responses.get.GetTodoResponse;
@@ -48,11 +49,12 @@ public class TodoManager implements TodoService {
     }
 
     @Override
-    public UpdateTodoResponse update(UUID id, CreateTodoRequest todoRequest) {
+    public UpdateTodoResponse update(UUID id, UpdateTodoRequest todoRequest) {
         rules.checkIfTodoExists(id);
-        var car = mapper.forRequest().map(todoRequest, Todo.class);
-        todoRepository.save(car);
-        return mapper.forResponse().map(car, UpdateTodoResponse.class);
+        var todo = mapper.forRequest().map(todoRequest, Todo.class);
+        todo.setId(id);
+        todoRepository.save(todo);
+        return mapper.forResponse().map(todo, UpdateTodoResponse.class);
     }
 
     @Override
