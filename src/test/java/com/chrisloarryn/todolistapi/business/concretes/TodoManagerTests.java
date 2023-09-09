@@ -63,13 +63,13 @@ public class TodoManagerTests {
 
 		given(configuration.setAmbiguityIgnored(true)).willReturn(configuration);
 		given(configuration.setMatchingStrategy(MatchingStrategies.LOOSE)).willReturn(configuration);
-		when(mapper.getConfiguration()).thenReturn(configuration);
+		given(mapper.getConfiguration()).willReturn(configuration);
 
 		ModelMapperService modelMapperService = new ModelMapperManager(mapper);
 		resultMapper = modelMapperService.forResponse();
 
 		given(configuration.setMatchingStrategy(MatchingStrategies.STANDARD)).willReturn(configuration);
-		when(mapper.getConfiguration()).thenReturn(configuration);
+		given(mapper.getConfiguration()).willReturn(configuration);
 
 		ModelMapperService modelMapperServiceReq = new ModelMapperManager(mapper);
 		requestMapper = modelMapperServiceReq.forRequest();
@@ -108,8 +108,6 @@ public class TodoManagerTests {
 
 		// Assert
 		assertNotNull(result);
-
-		// You may add more specific assertions based on your response mapping logic.
 	}
 
 	@Test
@@ -177,7 +175,7 @@ public class TodoManagerTests {
 	public void testDelete_WhenTodoExists() {
 		// Arrange
 		UUID id = UUID.randomUUID();
-		when(todoRepository.existsById(id)).thenReturn(true);
+		given(todoRepository.existsById(id)).willReturn(true);
 
 		// Act
 		todoService.delete(id);

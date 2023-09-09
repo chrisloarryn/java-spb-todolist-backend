@@ -43,7 +43,7 @@ public class TodoControllerTests {
     @Test
     public void testGetAll() {
         List<GetAllTodosResponse> todos = new ArrayList<>();
-        when(todoService.getAll()).thenReturn(todos);
+        given(todoService.getAll()).willReturn(todos);
 
         List<GetAllTodosResponse> result = todoController.getAll();
 
@@ -54,7 +54,7 @@ public class TodoControllerTests {
     public void testGetById() {
         UUID id = UUID.randomUUID();
         GetTodoResponse todoResponse = new GetTodoResponse();
-        when(todoService.getById(id)).thenReturn(todoResponse);
+        given(todoService.getById(id)).willReturn(todoResponse);
 
         GetTodoResponse result = todoController.getById(id);
 
@@ -65,7 +65,7 @@ public class TodoControllerTests {
     public void testAdd() throws InterruptedException {
         CreateTodoRequest request = new CreateTodoRequest();
         CreateTodoResponse response = new CreateTodoResponse();
-        when(todoService.add(request)).thenReturn(response);
+        given(todoService.add(request)).willReturn(response);
 
         CreateTodoResponse result = todoController.add(request);
 

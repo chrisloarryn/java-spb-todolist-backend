@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 public class TodoBusinessRulesTests {
@@ -28,7 +29,7 @@ public class TodoBusinessRulesTests {
 	@Test
 	public void testCheckIfTodoExists_WhenTodoExists_ShouldNotThrowException() {
 		UUID id = UUID.randomUUID();
-		when(repository.existsById(id)).thenReturn(true);
+		given(repository.existsById(id)).willReturn(true);
 
 		// The method should not throw an exception
 		todoBusinessRules.checkIfTodoExists(id);
@@ -39,7 +40,7 @@ public class TodoBusinessRulesTests {
 	@Test
 	public void testCheckIfTodoExists_WhenTodoDoesNotExist_ShouldThrowTodoNotFoundException() {
 		UUID id = UUID.randomUUID();
-		when(repository.existsById(id)).thenReturn(false);
+		given(repository.existsById(id)).willReturn(false);
 
 		// The method should throw TodoNotFoundException
 		assertThrows(TodoNotFoundException.class, () -> {
