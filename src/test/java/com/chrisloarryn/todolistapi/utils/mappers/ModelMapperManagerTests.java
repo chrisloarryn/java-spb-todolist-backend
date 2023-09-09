@@ -5,10 +5,12 @@ import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+@ActiveProfiles("test")
 public class ModelMapperManagerTests {
 
 	private ModelMapperManager modelMapperManager;

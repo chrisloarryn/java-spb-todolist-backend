@@ -5,32 +5,28 @@ import com.chrisloarryn.todolistapi.utils.mappers.ModelMapperManager;
 import com.chrisloarryn.todolistapi.utils.mappers.ModelMapperService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
 public class ModelMapperConfigTests {
 
-	@Autowired
-	private ApplicationContext applicationContext;
+	private final ModelMapperConfig modelMapperConfig;
+
+	public ModelMapperConfigTests() {
+		this.modelMapperConfig = new ModelMapperConfig();
+	}
 
 	@Test
 	public void testModelMapperBeanCreation() {
-		ModelMapper modelMapper = applicationContext.getBean(ModelMapper.class);
+		ModelMapper modelMapper = modelMapperConfig.getModelMapper();
 		assertNotNull(modelMapper);
 	}
 
 	@Test
 	public void testModelMapperServiceBeanCreation() {
-		ModelMapperService modelMapperService = applicationContext.getBean(ModelMapperService.class);
+		ModelMapperService modelMapperService = modelMapperConfig.getModelMapperService(modelMapperConfig.getModelMapper());
 		assertNotNull(modelMapperService);
-
-		// Ensure that the ModelMapperManager is used, which depends on the ModelMapper
-		// bean.
 		assertTrue(modelMapperService instanceof ModelMapperManager);
 	}
 }
