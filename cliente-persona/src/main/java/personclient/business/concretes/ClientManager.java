@@ -41,7 +41,7 @@ public class ClientManager implements ClientService {
     public GetClientResponse getById(UUID id) {
         if (!repo.existsById(id)) {
             throw new ClientNotFoundException(
-                    "Todo with id " + id + " does not exists");
+                    "Client with id " + id + " does not exists");
         }
         var todo = repo.findById(id).orElseThrow();
         return mapper.forResponse().map(todo, GetClientResponse.class);
@@ -66,7 +66,7 @@ public class ClientManager implements ClientService {
     public UpdateClientResponse update(UUID id, UpdateClientRequest todoRequest) {
         if (!repo.existsById(id)) {
             throw new ClientNotFoundException(
-                    "Todo with id " + id + " does not exists");
+                    "Client with id " + id + " does not exists");
         }
         var todo = mapper.forRequest().map(todoRequest, Client.class);
         todo.setId(id);
@@ -78,7 +78,7 @@ public class ClientManager implements ClientService {
     public void delete(UUID id) {
         if (!repo.existsById(id)) {
             throw new ClientNotFoundException(
-                    "Todo with id " + id + " does not exists");
+                    "Client with id " + id + " does not exists");
         }
         repo.deleteById(id);
     }

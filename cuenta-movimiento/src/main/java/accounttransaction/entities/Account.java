@@ -40,7 +40,7 @@ public class Account implements Serializable {
 
     @JsonProperty("numero")
     @NotEmpty(message = "Numero is required")
-    @Column(name = "account_number", nullable = false, unique = true)
+    @Column(name = "account_number", nullable = false, unique = true, updatable = true)
     private String accountNumber;
 
     @JsonProperty("saldoinicial")
@@ -58,8 +58,8 @@ public class Account implements Serializable {
 
     @JsonProperty("persona")
     @NotEmpty(message = "Persona is required")
-    @Column(name = "person_id", nullable = false)
-    private UUID personId;
+    @Column(name = "person_id", nullable = false, unique = false, updatable = true)
+    private UUID personId = UUID.fromString("40b1bdca-6fbc-4bc7-8462-9e6bf24a877f"); // 40b1bdca-6fbc-4bc7-8462-9e6bf24a877f
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

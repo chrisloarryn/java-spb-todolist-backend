@@ -42,7 +42,7 @@ public class AccountManager implements AccountService {
     public GetAccountResponse getById(UUID id) {
         if (!repo.existsById(id)) {
             throw new AccountNotFoundException(
-                    "Todo with id " + id + " does not exists");
+                    "Account with id " + id + " does not exists");
         }
         var todo = repo.findById(id).orElseThrow();
         return mapper.forResponse().map(todo, GetAccountResponse.class);
@@ -55,8 +55,6 @@ public class AccountManager implements AccountService {
             var createdTodo = repo.save(todo);
             return mapper.forResponse().map(createdTodo, CreateAccountResponse.class);
         } catch (BadRequestException e) {
-            System.out.println("=====================================");
-            System.out.println("=====================================");
             throw new BadRequestException(e.getMessage(), e.getCode());
         } catch (Exception e) {
             throw e;
@@ -67,7 +65,7 @@ public class AccountManager implements AccountService {
     public UpdateAccountResponse update(UUID id, UpdateAccountRequest todoRequest) {
         if (!repo.existsById(id)) {
             throw new AccountNotFoundException(
-                    "Todo with id " + id + " does not exists");
+                    "Account with id " + id + " does not exists");
         }
         var todo = mapper.forRequest().map(todoRequest, Account.class);
         todo.setId(id);
@@ -79,7 +77,7 @@ public class AccountManager implements AccountService {
     public void delete(UUID id) {
         if (!repo.existsById(id)) {
             throw new AccountNotFoundException(
-                    "Todo with id " + id + " does not exists");
+                    "Account with id " + id + " does not exists");
         }
         repo.deleteById(id);
     }

@@ -22,7 +22,7 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/clients")
+@RequestMapping("/api/accounts")
 public class AccountController {
     private final AccountService service;
 

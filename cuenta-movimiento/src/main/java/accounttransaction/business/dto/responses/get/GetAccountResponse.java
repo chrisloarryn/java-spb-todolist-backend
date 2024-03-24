@@ -34,7 +34,7 @@ public class GetAccountResponse {
     private Boolean status;
 
     @JsonProperty("tipo")
-    private AccountType accountType = AccountType.Ahorro;
+    private AccountType accountType;
 
     @JsonProperty("persona")
     private UUID personId;

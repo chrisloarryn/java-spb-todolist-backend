@@ -1,5 +1,6 @@
 package accounttransaction.business.dto.requests.update;
 
+import accounttransaction.entities.enums.AccountType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import accounttransaction.entities.enums.Priority;
@@ -14,37 +15,23 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateAccountRequest {
+    @JsonProperty("numero")
     @NonNull
-    @JsonProperty("nombre")
-    private String name;
+    private String accountNumber;
 
+    @JsonProperty("saldoinicial")
     @NonNull
-    @JsonProperty("clienteid")
-    private String client_id;
+    private Double initialBalance;
 
+    @JsonProperty("status")
     @NonNull
-    @JsonProperty("contrasena")
-    private String password;
+    private Boolean status;
 
+    @JsonProperty("tipo")
     @NonNull
-    @JsonProperty("genero")
-    private String gender;
+    private AccountType accountType = AccountType.Ahorro;
 
-    @JsonProperty("edad")
-    private int age;
-
-    @JsonProperty("identificacion")
-    private String email_identifier;
-
-    @JsonProperty("direccion")
-    private String address;
-
-    @JsonProperty("telefono")
-    private String phone_number;
-
-    @JsonProperty("estado")
-    private String status;
-
-    @JsonProperty("fecha_creacion")
-    private Date createdAt;
+    @JsonProperty("persona")
+    @NonNull
+    private UUID personId;
 }
