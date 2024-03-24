@@ -27,3 +27,10 @@ docker-compose up
 ## Swagger
 
 Swagger is available at: http://localhost:8080/swagger-ui/index.html
+
+
+## Executing karate tests
+
+```bash
+mvn clean test -Dkarate.env="local" -Dkarate.options="--tags @clients" -Ddriver=karate > log.log -X
+```
