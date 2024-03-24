@@ -12,8 +12,10 @@ services:
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
 
-  cuenta-clientes:
-    build: .
+  cliente-persona:
+    build:
+      context: ./cliente-persona
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "1203:1203"
@@ -24,14 +26,16 @@ services:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       
-  cuenta-transacciones:
-    build: .
+  cuenta-movimiento:
+    build:
+      context: ./cuenta-movimiento
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "1204:1204"
     depends_on:
       - postgres
-      - cuenta-clientes
+      - cliente-persona
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:65432/postgres
       SPRING_DATASOURCE_USERNAME: postgres

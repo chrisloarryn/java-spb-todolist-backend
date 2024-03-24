@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.chrisloarryn</groupId>
-	<artifactId>personclient</artifactId>
+	<artifactId>accounttransaction</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>todo-list-api</name>
-	<description>personclient</description>
+	<description>accounttransaction</description>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
