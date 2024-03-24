@@ -18,6 +18,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
@@ -29,8 +30,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
-@Table(name = "transactions", schema = "public")
-public class Transaction implements Serializable {
+@Table(name = "movements", schema = "public")
+public class Movement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -48,9 +49,14 @@ public class Transaction implements Serializable {
     @Column(name = "transaction_value", nullable = false)
     private Double transactionValue;
 
+    @JsonProperty("numerocuenta")
+    @NotNull(message = "El número de cuenta no puede ser nulo")
+    @Column(name = "account_number", nullable = true)
+    private String accountNumber;
+
     @JsonProperty("estado")
-    @Column(name = "status", nullable = false)
-    private Boolean status;
+    @Column(name = "status", nullable = true)
+    private Boolean status = true;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

@@ -30,7 +30,7 @@ public class GetAccountResponse {
     @JsonProperty("saldoinicial")
     private Double initialBalance;
 
-    @JsonProperty("status")
+    @JsonProperty("estado")
     private Boolean status;
 
     @JsonProperty("tipo")
@@ -38,4 +38,7 @@ public class GetAccountResponse {
 
     @JsonProperty("persona")
     private UUID personId;
+
+    @JsonProperty("fecha_creacion")
+    private Date createdAt;
 }

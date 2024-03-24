@@ -30,14 +30,14 @@ public class CreateAccountResponse {
     @JsonProperty("id")
     private UUID id;
 
-    @JsonProperty("numero")
+    @JsonProperty("numerocuenta")
     private String accountNumber;
 
     @JsonProperty("saldoinicial")
     private Double initialBalance;
 
-    @JsonProperty("status")
-    private Boolean status;
+    @JsonProperty("estado")
+    private Boolean status = true;
 
     @JsonProperty("tipo")
     private AccountType accountType = AccountType.Ahorro;
