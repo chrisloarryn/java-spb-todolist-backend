@@ -31,6 +31,30 @@ public class ControllerExceptionHandler { // extends ResponseEntityExceptionHand
         // Añadir más mapeos según sea necesario
     }
 
+    @ExceptionHandler(InsuficientBalanceException.class)
+    public ResponseEntity<Object> handleSaldoInsuficiente(InsuficientBalanceException ex) {
+        String message = "El usuario no tiene suficiente saldo para completar la transacción.";
+        ApiErrorResponse apiError = new ApiErrorResponse(
+                HttpStatus.UNPROCESSABLE_ENTITY,
+                message,
+                Collections.singletonList(ex.getMessage())
+        );
+
+        return new ResponseEntity<>(apiError, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler(UnparseableDateException.class)
+    public ResponseEntity<Object> handleUnparseableDate(UnparseableDateException ex) {
+        String message = "La fecha no pudo ser interpretada. Asegúrate de que tenga el formato 'yyyy-MM-dd'.";
+        ApiErrorResponse apiError = new ApiErrorResponse(
+                HttpStatus.BAD_REQUEST,
+                message,
+                Collections.singletonList(ex.getMessage())
+        );
+
+        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         String readableMessage = ex.getCause() != null ? ex.getCause().getMessage() : ex.getMessage();

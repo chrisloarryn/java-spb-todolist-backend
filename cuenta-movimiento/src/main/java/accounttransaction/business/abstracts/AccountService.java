@@ -18,10 +18,13 @@ public interface AccountService {
     List<GetAllAccountsResponse> getAll();
 
     GetAccountResponse getById(UUID id);
+    GetAccountResponse getByAccountNumber(String accountNumber);
 
     CreateAccountResponse add(CreateAccountRequest todo);
 
     UpdateAccountResponse update(UUID id, UpdateAccountRequest todo);
 
     void delete(UUID id);
+
+    boolean hasEnoughBalance(String accountNumber, double amount);
 }

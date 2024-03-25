@@ -2,14 +2,15 @@ package accounttransaction.api.controllers;
 
 import accounttransaction.business.abstracts.AccountService;
 import accounttransaction.business.abstracts.MovementService;
+import accounttransaction.business.abstracts.ReportService;
 import accounttransaction.business.dto.requests.create.CreateMovementRequest;
 import accounttransaction.business.dto.requests.update.UpdateMovementRequest;
 import accounttransaction.business.dto.responses.create.CreateMovementResponse;
 import accounttransaction.business.dto.responses.get.GetAccountResponse;
 import accounttransaction.business.dto.responses.get.GetAllMovementsResponse;
 import accounttransaction.business.dto.responses.get.GetMovementResponse;
+import accounttransaction.business.dto.responses.get.GetReportResponse;
 import accounttransaction.business.dto.responses.update.UpdateMovementResponse;
-import accounttransaction.entities.Account;
 import accounttransaction.exceptions.InsuficientBalanceException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,40 +33,19 @@ import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/movimientos")
-public class MovementController {
-    private final MovementService service;
-    private final AccountService accountService;
+@RequestMapping("/api/reports")
+public class ReportController {
+    private final ReportService service;
 
+
+    // query param: fecha (requerido)
+    // query param: cliente (requerido)
+    // account report cuentas con saldos, detalle de los movimientos.
     @GetMapping
-    public List<GetAllMovementsResponse> getAll() {
-        return service.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public GetMovementResponse getById(@PathVariable UUID id) {
-        return service.getById(id);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public CreateMovementResponse add(@RequestBody @NotNull @Validated CreateMovementRequest request) {
-        if (!accountService.hasEnoughBalance(request.getAccountNumber(), request.getTransactionValue())) {
-            throw new InsuficientBalanceException("Saldo insuficiente");
-        }
-        GetAccountResponse account = accountService.getByAccountNumber(request.getAccountNumber());
-        request.setInitialBalance(account.getInitialBalance());
-        return service.add(request);
-    }
-
-    @PutMapping("/{id}")
-    public UpdateMovementResponse update(@PathVariable UUID id, @Valid @RequestBody UpdateMovementRequest request) {
-        return service.update(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable UUID id) {
-        service.delete(id);
+    public GetReportResponse getAll(
+            @RequestParam("fecha") String fecha,
+            @RequestParam("cliente") String cliente
+    ) {
+        return service.getReport(fecha, UUID.fromString(cliente));
     }
 }

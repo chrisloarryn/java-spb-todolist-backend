@@ -49,6 +49,12 @@ public class AccountManager implements AccountService {
     }
 
     @Override
+    public GetAccountResponse getByAccountNumber(String accountNumber) {
+        var todo = repo.findByAccountNumber(accountNumber).orElseThrow();
+        return mapper.forResponse().map(todo, GetAccountResponse.class);
+    }
+
+    @Override
     public CreateAccountResponse add(CreateAccountRequest todoRequest) {
         try {
             var todo = mapper.forRequest().map(todoRequest, Account.class);
@@ -80,5 +86,11 @@ public class AccountManager implements AccountService {
                     "Account with id " + id + " does not exists");
         }
         repo.deleteById(id);
+    }
+
+    @Override
+    public boolean hasEnoughBalance(String accountNumber, double amount) {
+        Account accountFound = repo.findByAccountNumber(accountNumber).orElseThrow();
+        return !(accountFound.getInitialBalance() <= amount);
     }
 }

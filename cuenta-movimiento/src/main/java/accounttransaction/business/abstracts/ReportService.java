@@ -11,14 +11,8 @@ import accounttransaction.business.dto.responses.update.UpdateMovementResponse;
 import java.util.List;
 import java.util.UUID;
 
-public interface MovementService {
-    List<GetAllMovementsResponse> getAll();
+public interface ReportService {
 
-    GetMovementResponse getById(UUID id);
+    GetReportResponse getReport(String fecha, UUID cliente);
 
-    CreateMovementResponse add(CreateMovementRequest todo);
-
-    UpdateMovementResponse update(UUID id, UpdateMovementRequest todo);
-
-    void delete(UUID id);
 }

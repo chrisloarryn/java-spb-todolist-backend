@@ -1,6 +1,7 @@
 package accounttransaction.business.dto.requests.create;
 
 import accounttransaction.entities.enums.AccountType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,8 +22,9 @@ public class CreateMovementRequest {
     @NonNull
     private String accountNumber;
 
-    @JsonProperty("saldoinicial")
-    @NonNull
+    // @JsonProperty("saldoinicial")
+    // @NonNull
+    @JsonIgnore
     private Double initialBalance;
 
     @JsonProperty("valormovimiento")
