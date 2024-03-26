@@ -47,7 +47,7 @@ public class Account implements Serializable {
     @Column(name = "initial_balance", nullable = false)
     private Double initialBalance;
 
-    @JsonProperty("status")
+    @JsonProperty("estado")
     @Column(name = "status", nullable = false)
     private Boolean status;
 

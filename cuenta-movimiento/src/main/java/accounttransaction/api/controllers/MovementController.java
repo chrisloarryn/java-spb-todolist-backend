@@ -10,6 +10,7 @@ import accounttransaction.business.dto.responses.get.GetAllMovementsResponse;
 import accounttransaction.business.dto.responses.get.GetMovementResponse;
 import accounttransaction.business.dto.responses.update.UpdateMovementResponse;
 import accounttransaction.entities.Account;
+import accounttransaction.entities.enums.OperationType;
 import accounttransaction.exceptions.InsuficientBalanceException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -49,9 +50,18 @@ public class MovementController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreateMovementResponse add(@RequestBody @NotNull @Validated CreateMovementRequest request) {
-        if (!accountService.hasEnoughBalance(request.getAccountNumber(), request.getTransactionValue())) {
+        if (request.getTransactionValue() < 0) {
+            request.setOperationType(OperationType.WITHDRAWAL);
+        } else if (request.getTransactionValue() > 0) {
+            request.setOperationType(OperationType.DEPOSITED);
+        } else {
+            request.setOperationType(OperationType.NEUTRAL);
+        }
+
+        if (request.getOperationType() == OperationType.WITHDRAWAL && !accountService.hasEnoughBalance(request.getAccountNumber(), request.getTransactionValue())) {
             throw new InsuficientBalanceException("Saldo insuficiente");
         }
+
         GetAccountResponse account = accountService.getByAccountNumber(request.getAccountNumber());
         request.setInitialBalance(account.getInitialBalance());
         return service.add(request);

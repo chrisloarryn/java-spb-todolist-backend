@@ -12,10 +12,13 @@ import accounttransaction.business.dto.responses.update.UpdateMovementResponse;
 import accounttransaction.business.rules.AccountBusinessRules;
 import accounttransaction.entities.AccountNotFoundException;
 import accounttransaction.entities.Movement;
+import accounttransaction.entities.enums.OperationType;
 import accounttransaction.exceptions.BadRequestException;
+import accounttransaction.repository.AccountRepository;
 import accounttransaction.repository.MovementRepository;
 import accounttransaction.utils.mappers.ModelMapperService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +29,7 @@ import java.util.UUID;
 public class MovementManager implements MovementService {
 
     private final MovementRepository repo;
+    private final AccountRepository accountRepo;
     private final ModelMapperService mapper;
     private final AccountBusinessRules rules;
 
@@ -51,7 +55,50 @@ public class MovementManager implements MovementService {
     @Override
     public CreateMovementResponse add(CreateMovementRequest todoRequest) {
         try {
+            String compoundMessage = "";
+            double transactionValue;
+
             var todo = mapper.forRequest().map(todoRequest, Movement.class);
+            var account = accountRepo.findByAccountNumber(todoRequest.getAccountNumber())
+                    .orElseThrow(() -> new AccountNotFoundException("Cuenta con el número " + todoRequest.getAccountNumber() + " no existe"));
+
+
+            try {
+                transactionValue = Double.parseDouble(todoRequest.getTransactionValue().toString());
+            } catch (NumberFormatException e) {
+                throw new BadRequestException("El valor de la transacción no es un número válido.", HttpStatus.BAD_REQUEST.toString());
+            }
+
+            double actualBalance = account.getInitialBalance();
+            double absoluteTransactionValue = Math.abs(transactionValue);
+
+            switch (todoRequest.getOperationType()) {
+                case DEPOSITED:
+                    actualBalance += absoluteTransactionValue;
+                    todo.setDetail(String.format("Deposito de %s", absoluteTransactionValue));
+                    break;
+                case WITHDRAWAL:
+                    actualBalance -= absoluteTransactionValue;
+                    todo.setDetail(String.format("Retiro de %s", absoluteTransactionValue));
+                    break;
+                case NEUTRAL:
+                    // No cambia el saldo
+                    todo.setDetail(String.format("No se hicieron movimientos, monto %s", absoluteTransactionValue));
+                    break;
+                default:
+                    throw new BadRequestException("Tipo de operación no válido.", HttpStatus.BAD_REQUEST.toString());
+            }
+
+            System.out.println("==============================");
+            System.out.println("==============================");
+            System.out.println("==============================");
+            System.out.println(String.format("La cuenta inicialmente tiene %s", account.getInitialBalance()));
+            System.out.println(String.format("New Balance will be %s", transactionValue));
+            System.out.println("==============================");
+            System.out.println("==============================");
+
+            account.setInitialBalance(actualBalance);
+
             var createdTodo = repo.save(todo);
             return mapper.forResponse().map(createdTodo, CreateMovementResponse.class);
         } catch (BadRequestException e) {

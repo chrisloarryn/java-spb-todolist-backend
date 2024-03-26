@@ -58,6 +58,10 @@ public class Movement implements Serializable {
     @Column(name = "status", nullable = true)
     private Boolean status = true;
 
+    @JsonProperty("detalle")
+    @Column(name = "detail", nullable = true)
+    private String detail;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", updatable = false)

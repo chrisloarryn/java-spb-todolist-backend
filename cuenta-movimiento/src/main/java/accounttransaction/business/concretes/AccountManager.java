@@ -90,7 +90,17 @@ public class AccountManager implements AccountService {
 
     @Override
     public boolean hasEnoughBalance(String accountNumber, double amount) {
-        Account accountFound = repo.findByAccountNumber(accountNumber).orElseThrow();
-        return !(accountFound.getInitialBalance() <= amount);
+        Account accountFound = repo.findByAccountNumber(accountNumber)
+                .orElseThrow(() -> new AccountNotFoundException("Cuenta con el número " + accountNumber + " no existe"));
+
+        double absoluteAmount = Math.abs(amount);
+
+        System.out.println("==============================");
+        System.out.println(String.format("La cuenta inicialmente tiene %s", accountFound.getInitialBalance()));
+        System.out.println(String.format("El monto absoluto de la operación es %s", absoluteAmount));
+        System.out.println("==============================");
+
+        // Verifica si el saldo inicial es mayor o igual al monto absoluto de la operación
+        return accountFound.getInitialBalance() >= absoluteAmount;
     }
 }

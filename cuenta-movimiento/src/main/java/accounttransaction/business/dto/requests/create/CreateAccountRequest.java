@@ -26,7 +26,7 @@ public class CreateAccountRequest {
     @NonNull
     private Double initialBalance;
 
-    @JsonProperty("status")
+    @JsonProperty("estado")
     @NonNull
     private Boolean status;
 

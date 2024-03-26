@@ -36,6 +36,9 @@ public class GetAllMovementsResponse {
     @JsonProperty("estado")
     private Boolean status;
 
+    @JsonProperty("detalle")
+    private String detail;
+
     @JsonProperty("fecha_creacion")
     @CreationTimestamp
     private Date createdAt;
