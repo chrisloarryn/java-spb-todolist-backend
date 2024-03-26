@@ -11,7 +11,7 @@
 	<groupId>com.chrisloarryn</groupId>
 	<artifactId>personclient</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>todo-list-api</name>
+	<name>personclient</name>
 	<description>personclient</description>
 	<packaging>jar</packaging>
 	<properties>

@@ -11,7 +11,7 @@
 	<groupId>com.chrisloarryn</groupId>
 	<artifactId>accounttransaction</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>todo-list-api</name>
+	<name>accounttransaction</name>
 	<description>accounttransaction</description>
 	<packaging>jar</packaging>
 	<properties>
