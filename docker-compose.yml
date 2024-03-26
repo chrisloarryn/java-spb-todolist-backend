@@ -11,6 +11,8 @@ services:
       - "65432:5432"
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
+      - ./BD_SCRIPTS:/docker-entrypoint-initdb.d
+
 
   cliente-persona:
     build:
@@ -22,7 +24,7 @@ services:
     depends_on:
       - postgres
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:65432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       
@@ -37,6 +39,6 @@ services:
       - postgres
       - cliente-persona
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:65432/postgres
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres

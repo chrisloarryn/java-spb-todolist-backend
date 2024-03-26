@@ -1,11 +1,24 @@
-# Use a minimal base image for Java
-FROM openjdk:11-jre-slim
-
-# Set the working directory inside the container
+# Etapa de construcción
+FROM maven:3-eclipse-temurin-21-alpine AS build
 WORKDIR /app
 
-# Copy the JAR file into the container (assuming your JAR file is named 'myapp.jar')
-COPY target/*.jar /app/todolist.jar
+COPY src ./src
 
-# Specify the command to run your Spring Boot application
-CMD ["java", "-jar", "todolist.jar"]
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN mvn clean package -B
+
+# log the output of the build
+RUN ls -la /app/target
+
+# Etapa de ejecución
+FROM openjdk:18-slim
+WORKDIR /app
+COPY --from=build /app/target/*.jar cp.jar
+
+# Exponer el puerto 8080
+EXPOSE 8080
+RUN ls -la /app
+
+# Ejecutar la aplicación
+ENTRYPOINT ["java", "-jar", "cp.jar"]

@@ -30,6 +30,7 @@ create table if not exists public.movements
     created_at        timestamp(6),
     initial_balance   double precision not null,
     status            boolean,
+    detail            varchar(255),
     transaction_type  varchar(255)     not null,
     transaction_value double precision not null
 );

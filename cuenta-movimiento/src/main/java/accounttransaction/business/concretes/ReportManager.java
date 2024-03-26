@@ -63,7 +63,7 @@ public class ReportManager implements ReportService {
             calendar.set(Calendar.SECOND, 59);
             Date endDate = calendar.getTime();
 
-            String url = "http://localhost:1203/api/clients/" + cliente;
+            String url = "http://cliente-persona:1203/api/clients/" + cliente;
 
             GetClientResponse externalAccountDetails = restTemplate.getForObject(url, GetClientResponse.class);
 

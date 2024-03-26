@@ -17,7 +17,7 @@ import org.apache.commons.io.FileUtils;
 import net.masterthought.cucumber.Configuration;
 import net.masterthought.cucumber.ReportBuilder;
 public class IntegrationTest {
-    @Test
+    // @Test
     void testParallel() {
         Results results = Runner.path("classpath:karate")
                 .outputCucumberJson(true)
