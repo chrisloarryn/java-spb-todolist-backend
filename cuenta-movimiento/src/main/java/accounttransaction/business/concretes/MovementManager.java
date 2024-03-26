@@ -89,14 +89,6 @@ public class MovementManager implements MovementService {
                     throw new BadRequestException("Tipo de operación no válido.", HttpStatus.BAD_REQUEST.toString());
             }
 
-            System.out.println("==============================");
-            System.out.println("==============================");
-            System.out.println("==============================");
-            System.out.println(String.format("La cuenta inicialmente tiene %s", account.getInitialBalance()));
-            System.out.println(String.format("New Balance will be %s", transactionValue));
-            System.out.println("==============================");
-            System.out.println("==============================");
-
             account.setInitialBalance(actualBalance);
 
             var createdTodo = repo.save(todo);

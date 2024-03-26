@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Setter
@@ -24,5 +25,5 @@ public class GetReportResponse {
     private int results;
 
     @JsonProperty("data")
-    private GetAllMovementsResponse data;
+    private List<GetAllMovementsResponse> data;
 }

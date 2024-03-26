@@ -7,6 +7,7 @@ import accounttransaction.business.dto.requests.create.CreateMovementRequest;
 import accounttransaction.business.dto.requests.update.UpdateMovementRequest;
 import accounttransaction.business.dto.responses.create.CreateMovementResponse;
 import accounttransaction.business.dto.responses.get.GetAccountResponse;
+import accounttransaction.business.dto.responses.get.GetAllAccountsResponse;
 import accounttransaction.business.dto.responses.get.GetAllMovementsResponse;
 import accounttransaction.business.dto.responses.get.GetClientResponse;
 import accounttransaction.business.dto.responses.get.GetMovementResponse;
@@ -28,6 +29,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -51,7 +54,14 @@ public class ReportManager implements ReportService {
     public GetReportResponse getReport(String fecha, UUID cliente) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = sdf.parse(fecha);
+            Date startDate = sdf.parse(fecha);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(startDate);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
+            Date endDate = calendar.getTime();
 
             String url = "http://localhost:1203/api/clients/" + cliente;
 
@@ -61,24 +71,25 @@ public class ReportManager implements ReportService {
                 throw new AccountNotFoundException("Account with client name " + cliente + " does not exists");
             }
 
-            GetAccountResponse account = accountRepo.findByPersonId(externalAccountDetails.getId())
-                    .map(todo -> mapper.forResponse().map(todo, GetAccountResponse.class))
-                    .orElseThrow(() -> new AccountNotFoundException("Account with client name " + cliente + " does not exists"));
+            List<Account> accounts = accountRepo.findByPersonId(externalAccountDetails.getId())
+                    .orElseThrow(() -> new AccountNotFoundException("No se encontraron cuentas para el cliente con ID " + cliente));
 
-            List<Movement> movements = repo.findAll().stream()
-                    .filter(movement -> movement.getCreatedAt().before(date) && movement.getAccountNumber().equals(account.getAccountNumber()))
-                    .collect(Collectors.toList());
+            List<Movement> allMovements = accounts.stream()
+                    .flatMap(account -> repo.findByAccountNumber(account.getAccountNumber())
+                            .orElseThrow(() -> new AccountNotFoundException("No se encontraron movimientos para la cuenta con número " + account.getAccountNumber()))
+                            .stream())
+                    .filter(movement -> (movement.getCreatedAt().after(startDate) || movement.getCreatedAt().equals(startDate)) && (movement.getCreatedAt().before(endDate) || movement.getCreatedAt().equals(endDate)))
+                    .toList();
 
-            GetAllMovementsResponse allMovements = mapper.forResponse().map(movements, GetAllMovementsResponse.class);
+            List<GetAllMovementsResponse> mapped = allMovements.stream().map(movement -> mapper.forResponse().map(movement, GetAllMovementsResponse.class)).collect(Collectors.toList());
 
             GetReportResponse report = new GetReportResponse();
-            if (!movements.isEmpty()) {
-                report.setData(allMovements);
-            }
-            report.setDate(date);
-            report.setResults(movements.size());
+            report.setData(mapped);
+            report.setDate(endDate);
+            report.setResults(allMovements.size());
 
             return report;
+
         } catch (ParseException e) {
             throw new UnparseableDateException("Date format is not valid");
         }
